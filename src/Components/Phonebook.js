@@ -13,6 +13,23 @@ export default class Phonebook extends Component {
     filter: "",
   };
 
+  componentDidMount() {
+    const contacts = localStorage.getItem("contacts");
+    const parsedContacts = JSON.parse(contacts);
+
+    if (parsedContacts) {
+      this.setState({ contacts: parsedContacts });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const nextContact = this.state.contacts;
+    const prevContact = prevState.contacts;
+
+    if (nextContact !== prevContact) {
+      localStorage.setItem("contacts", JSON.stringify(nextContact));
+    }
+  }
   formSubmitHandler = (data) => {
     if (
       this.state.contacts.some(
